@@ -1,4 +1,4 @@
-26
+261103
 scaffold_floor = box(pos=vec(1, -5, 0), size=vec(7, 0.2, 3))
 scaffold_body =  box(pos=vec(3, -1.5, 0), size=vec(0.3, 7, 0.3))
 scaffold_body2 = box(pos=vec(1, 1.6, 0), size=vec(5, 0.3, 0.3))
