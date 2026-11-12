@@ -19,6 +19,7 @@ s_body = box(pos=vec(3, -1.5, 0), size=vec(0.3, 7, 0.3), color=vec(0.55, 0.55, 0
 s_body2 = box(pos=vec(1, 1.6, 0), size=vec(5, 0.3, 0.3), color=vec(0.55, 0.55, 0.55))
 s_string = cylinder(pos=vec(0, 0.7, 0), axis=vec(0, 3, 0), size=vec(0.8, 0.2, 0.2))
 scaffold = compound( [s_floor],[s_body],[s_body2],[s_string]) 
+
 # 행맨
 head = sphere(pos=vec(0, 0, 0), color=vec(250/255, 224/255, 180/255), radius=0.85)
 left_eye = sphere(pos=vec(-0.28, 0.15, 0.78), radius=0.07,color=vec(0, 0, 0))
@@ -83,26 +84,20 @@ for part in Hangman :
     
 Word = []
 correct_count = 0
+answer = "beautiful"
 
 for i in range(len("beautiful")) :
-    answer = label(pos=vec(-2.2 + i*0.8, -6.5, 2), text="beautiful"[i], height=25, box = False, color = color.black)
-    Word.append(answer)
+    a = label(pos=vec(-2.2 + i*0.8, -6.5, 2), text="beautiful"[i], height=25, box = False, color = color.black)
+    Word.append(a)
     
 def correct_answer(evt) :
     global correct_count
-    answer = "beautiful"
     k = evt.key.lower() 
-    if k in "beautiful" :
-        for i in range(len("beautiful")) :
+    if k in answer :
+        for i in range(len(answer)) :
             if answer[i] == k :
                 Word[i].color = vec(1, 1, 1)
-    correct_count += 1
-scene.bind("keydown", correct_answer)
 
-
-scene.bind("keydown", wrong_answer)
-    
-    
 wrong_count = 0
 used = []
 
@@ -121,5 +116,6 @@ def wrong_answer(evt) :
             print(len(Hangman))
             print(wrong_count)
     
-
+scene.bind("keydown", correct_answer)
+scene.bind("keydown", wrong_answer)
     
