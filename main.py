@@ -119,3 +119,83 @@ def wrong_answer(evt) :
 scene.bind("keydown", correct_answer)
 scene.bind("keydown", wrong_answer)
     
+#261117
+
+# 카메라
+scene.center=vec(0,-3, 2)
+
+# 처형대
+s_floor = box(pos=vec(1, -5, 0), size=vec(7, 0.2, 3), color=vec(165.75/255, 165.75/255, 165.75/255))
+s_body = box(pos=vec(3, -1.5, 0), size=vec(0.3, 7, 0.3), color=vec(140.25/255, 140.25/255, 140.25/255))
+s_body2 = box(pos=vec(1, 1.6, 0), size=vec(5, 0.3, 0.3), color=vec(140.25/255, 140.25/255, 140.25/255))
+s_string = cylinder(pos=vec(0, 0.7, 0), axis=vec(0, 3, 0), size=vec(0.8, 0.2, 0.2))
+scaffold = compound( [s_floor],[s_body],[s_body2],[s_string]) 
+
+# 머리
+head = sphere(pos=vec(0, 0, 0), color=vec(250/255, 224/255, 180/255), radius=0.85)
+
+# 눈
+left_eye = sphere(pos=vec(-0.28, 0.15, 0.78), radius=0.07,color=vec(0,0,0))
+right_eye = sphere(pos=vec(0.28, 0.15, 0.78), radius=0.07, color=vec(0,0,0))
+
+# 입
+mouth = ellipsoid(pos=vec(0, -0.22, 0.8),length=0.3, height=0.5, width=0.05, color=vec(204/255, 76.5/255, 89.25/255))
+
+# 몸통
+body = ellipsoid(pos=vec(0, -1.65, 0), length=1.5, height=1.8, width=0.8, color=vec(76.5/255, 216.75/255, 102/255))
+
+# 팔, 손
+left_arm = ellipsoid(pos=vec(-0.9, -0.9, 0), axis=vec(-0.8, -0.9, 0), height=1.2, length=0.45, width=0.45, color=vec(0.3, 0.85, 0.4))
+right_arm = ellipsoid(pos=vec(0.9, -0.9, 0), axis=vec(0.8, -0.9, 0), height=1.2, length=0.45, width=0.45, color=vec(0.3, 0.85, 0.4))
+left_hand = sphere(pos=vec(-1.45, -0.55, 0), radius=0.23, color=vec(250/255, 224/255, 180/255))
+right_hand = sphere(pos=vec(1.45, -0.55, 0), radius=0.23, color=vec(250/255, 224/255, 180/255))
+
+# 다리, 발
+left_leg = ellipsoid(pos=vec(-0.6, -2.7, 0), axis=vec(1.5, -0.9, 0), length=0.55, height=1.5, width=0.65, color=vec(0.25, 0.65, 0.95))
+right_leg = ellipsoid(pos=vec(0.6, -2.7, 0), axis=vec(-1.5, -0.9, 0), length=0.55, height=1.5, width=0.65, color=vec(0.25, 0.65, 0.95))
+left_foot = sphere(pos=vec(-1, -3.4, 0.1), radius=0.3, color=vec(0.35, 0.25, 0.2))
+right_foot = sphere(pos=vec(1, -3.4, 0.1), radius=0.3, color=vec(0.35, 0.25, 0.2))
+
+# 행맨
+Hangman = [head, left_eye, right_eye, mouth, body, left_arm, right_arm, left_hand, right_hand, left_leg, right_leg, left_foot, right_foot]
+           
+for part in Hangman :
+    part.visible = False
+    
+    
+# 알파벳(정답, 오답)    
+Word = []
+answer = list("beautiful")
+
+for i in range(len(answer)) :
+    Word.append(label(pos=vec(-2.2 + i*0.8, -6.5, 2), text=answer[i], height=25, box = False, color = color.black))
+
+def correct_answer(evt) :
+    k = evt.key.lower() 
+    if k in answer :
+        for i in range(len(answer)) :
+            if answer[i] == k :
+                Word[i].color = vec(1, 1, 1)
+
+wrong_count = 0
+used = []
+
+def wrong_answer(evt) : 
+    global wrong_count
+    k = evt.key.lower()
+    print(wrong_count, used, k)
+    if k in used :
+        return
+    used.append(k)
+    if k not in answer :
+        if wrong_count < 13 :
+            Hangman[wrong_count].visible = True
+            wrong_count += 1
+
+
+if wrong_count == 12 :
+    label(pos=vec(0.5,-2,1), text="게임 오버!")
+
+
+scene.bind("keydown", correct_answer)
+scene.bind("keydown", wrong_answer)
